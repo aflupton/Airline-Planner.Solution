@@ -3,17 +3,18 @@
 }
 @using AirlinePlanner.Models;
 
-<h3>Flight: @Model["selectedFlight"].GetFlightName()</h3>
+<h2>Flight: <strong>@Model["selectedFlight"].GetFlightName()</strong></h2>
+<hr>
 @if (@Model["flightCities"].Count != 0)
 {
-  <h4>Here are the associated cities for this flight:</h4>
+  <h5>Here are the associated cities for flight <strong>@Model["selectedFlight"].GetFlightName()</strong>:</h5>
   <div>
     @foreach (var city in @Model["flightCities"])
     {
       <div>
         <ul>
-          <li>Departure city: @city.GetName()</li>
-          <li>Airline: @city.GetAirline()</li>
+          <li>City: <strong>@city.GetName()</strong></li>
+          <li>Airline: <strong>@city.GetAirline()</strong></li>
         </ul>
         <div class="row">
           <div class="col-1">
@@ -35,7 +36,7 @@
     }
   </div>
 }
-  <h4>Associate another city to this flight:</h4>
+  <h5>Associate another city to this flight:</h5>
 
   <form class="form-group" action="/flights/@Model["selectedFlight"].GetId()/cities/new" method="post">
     <div class="row">

@@ -1,11 +1,11 @@
 @{
   Layout = "_Layout";
 }
-<h3>City: @Model["selectedCity"].GetName()</h3>
-<hr />
+<h2>City: <strong>@Model["selectedCity"].GetName()</strong></h2>
+<hr>
 @if (@Model["cityFlights"].Count != 0)
 {
-  <h4>This city has these flights:</h4>
+  <h5>@Model["selectedCity"].GetName() has these flights:</h5>
   <div>
     @foreach (var flight in @Model["cityFlights"])
     {
@@ -37,7 +37,7 @@
     }
   </div>
 }
-<h4>Add a flight to this city:</h4>
+<h5>Add another flight to this city:</h5>
 <form action='/cities/@Model["selectedCity"].GetCityId()/flights/new' method='post'>
   <label for='flight-id'>Select a flight</label>
   <select id='flight-id' name='flight-id' type='text'>
