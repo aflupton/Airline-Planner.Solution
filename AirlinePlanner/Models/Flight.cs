@@ -287,9 +287,10 @@ namespace AirlinePlanner.Models
       cmd.Parameters.Add(flightIdParameter);
 
       cmd.ExecuteNonQuery();
+      conn.Close();
       if (conn != null)
       {
-        conn.Close();
+        conn.Dispose();
       }
     }
 //delete all flight instances from database
