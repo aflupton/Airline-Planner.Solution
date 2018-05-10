@@ -52,7 +52,7 @@ namespace AirlinePlanner.Models
     {
          return this.GetName().GetHashCode();
     }
-//saves new city instance to database
+//Create/save new city instance to cities table
     public void Save()
     {
       MySqlConnection conn = DB.Connection();
@@ -80,7 +80,7 @@ namespace AirlinePlanner.Models
         conn.Dispose();
       }
     }
-//gets all city objects from database
+//Read/get all city instances from cities table
     public static List<City> GetAllCities()
     {
       List<City> allCities = new List<City>{};
@@ -105,7 +105,7 @@ namespace AirlinePlanner.Models
       }
       return allCities;
     }
-//finds city instance in database
+//Recalls/finds city instances in cities table
     public static City Find(int citiesId)
     {
         MySqlConnection conn = DB.Connection();
@@ -138,48 +138,7 @@ namespace AirlinePlanner.Models
         }
         return newCity;
     }
-//updates city instance in database
-    public void UpdateCity(string newCity)
-    {
-
-    }
-//deletes single city instance in database
-    public void Delete()
-    {
-      MySqlConnection conn = DB.Connection();
-      conn.Open();
-      var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"DELETE FROM cities WHERE id = @Cityd;
-      DELETE FROM cities_flights
-      WHERE city_id = @CityId;";
-
-      MySqlParameter cityIdParameter = new MySqlParameter();
-      cityIdParameter.ParameterName = "@CityId";
-      cityIdParameter.Value = this.GetCityId();
-      cmd.Parameters.Add(cityIdParameter);
-
-      cmd.ExecuteNonQuery();
-      if (conn != null)
-      {
-        conn.Close();
-      }
-    }
-
-    public static void DeleteAll()
-    {
-      MySqlConnection conn = DB.Connection();
-      conn.Open();
-      MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"DELETE FROM cities;";
-      cmd.ExecuteNonQuery();
-      conn.Close();
-      if (conn != null)
-      {
-          conn.Dispose();
-      }
-
-    }
-
+//Create/save to join table
     public void AddFlightsToCity(Flight newFlight)
     {
       MySqlConnection conn = DB.Connection();
@@ -205,7 +164,7 @@ namespace AirlinePlanner.Models
       }
 
     }
-
+//Reads from join table
     public List<Flight> GetFlights()
     {
       MySqlConnection conn = DB.Connection();
@@ -243,6 +202,73 @@ namespace AirlinePlanner.Models
       }
       return flights;
 
+
+    }
+//Updates single city instance in cities table
+    public void UpdateCity(string newName, string newAirline)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = "@UPDATE cities SET name = @newName, airline = @newAirline WHERE id = @searchId;";
+
+      MySqlParameter name = new MySqlParameter();
+      name.ParameterName = "@newName";
+      name.Value = newName;
+      cmd.Parameters.Add(name);
+      //cmd.Parameters.Add(newMySqlParameter("@newName", _name));
+
+      MySqlParameter airline = new MySqlParameter();
+      airline.ParameterName = "@newAirline";
+      airline.Value = newAirline;
+      cmd.Parameters.Add(airline);
+      //cmd.Parameters.Add(newMySqlParameter("@newAirline", _airline));
+
+      cmd.ExecuteNonQuery();
+      _name = newName;
+      _airline = newAirline;
+
+      conn.Close();
+      if(conn != null)
+      {
+        conn.Dispose();
+      }
+
+    }
+//Deletes single city instance from cities table
+    public void Delete()
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"DELETE FROM cities WHERE id = @Cityd;
+      DELETE FROM cities_flights
+      WHERE city_id = @CityId;";
+
+      MySqlParameter cityIdParameter = new MySqlParameter();
+      cityIdParameter.ParameterName = "@CityId";
+      cityIdParameter.Value = this.GetCityId();
+      cmd.Parameters.Add(cityIdParameter);
+
+      cmd.ExecuteNonQuery();
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
+//Deletes all city instances from cities table
+    public static void DeleteAll()
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"DELETE FROM cities;";
+      cmd.ExecuteNonQuery();
+      conn.Close();
+      if (conn != null)
+      {
+          conn.Dispose();
+      }
 
     }
   }

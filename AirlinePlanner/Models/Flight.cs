@@ -95,7 +95,7 @@ namespace AirlinePlanner.Models
     {
          return this.GetFlightName().GetHashCode();
     }
-//saves flight instance to database
+//Create/save flight instance to flights table
     public void Save()
     {
       MySqlConnection conn = DB.Connection();
@@ -103,10 +103,34 @@ namespace AirlinePlanner.Models
       MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
       cmd.CommandText = @"INSERT INTO flights (flight_name, date, dept_city, arrival_city, status) VALUES (@thisName, @thisDate, @thisDeparture, @thisArrival, @thisStatus);";
 
+      // MySqlParameter flightName = new MySqlParameter();
+      // flightName.ParameterName = "@thisName";
+      // flightName.Value = this._name;
+      // cmd.Parameters.Add(flightName);
       cmd.Parameters.Add(new MySqlParameter("@thisName", _flightName));
+
+      //MySqlParameter date = new MySqlParameter();
+      // date.ParameterName = "@thisDate";
+      // date.Value = this._date;
+      // cmd.Parameters.Add(flightName);
       cmd.Parameters.Add(new MySqlParameter("@thisDate", _date));
+
+      //MySqlParameter departureCity = new MySqlParameter();
+      // departureCity.ParameterName = "@thisDeparture";
+      // departureCity.Value = this._deptCity;
+      // cmd.Parameters.Add(departureCity);
       cmd.Parameters.Add(new MySqlParameter("@thisDeparture", _deptCity));
+
+      //MySqlParameter arrivalCity = new MySqlParameter();
+      // arrivalCity.ParameterName = "@thisArrival";
+      // arrivalCity.Value = this._arrivalCity;
+      // cmd.Parameters.Add(arrivalCity);
       cmd.Parameters.Add(new MySqlParameter("@thisArrival", _arrivalCity));
+
+      //MySqlParameter status = new MySqlParameter();
+      // status.ParameterName = "@thisStatus";
+      // status.Value = this._status;
+      // cmd.Parameters.Add(status);
       cmd.Parameters.Add(new MySqlParameter("@thisStatus", _status));
 
       cmd.ExecuteNonQuery();
@@ -117,7 +141,7 @@ namespace AirlinePlanner.Models
           conn.Dispose();
       }
     }
-//get all flight instances from database
+//Read/get all flight instances from flights table
     public static List<Flight> GetAllFlights()
     {
       List<Flight> allFlights = new List<Flight> {};
@@ -146,7 +170,7 @@ namespace AirlinePlanner.Models
       return allFlights;
 
     }
-//saves to join table
+//Create/save to join table
     public void AddCitiesToFlights(City newCity)
     {
       MySqlConnection conn = DB.Connection();
@@ -172,7 +196,7 @@ namespace AirlinePlanner.Models
       }
 
     }
-//reads from join table
+//Reads from join table
     public List<City> GetCities()
     {
       MySqlConnection conn = DB.Connection();
@@ -206,7 +230,7 @@ namespace AirlinePlanner.Models
       }
       return cities;
     }
-//finds flight instances from database
+//Recalls/finds flight instances in flights table
     public static Flight Find(int flightsId)
     {
         MySqlConnection conn = DB.Connection();
@@ -244,25 +268,54 @@ namespace AirlinePlanner.Models
         }
         return newFlight;
     }
-//updates flight instances in database
-    public void UpdateStatus(string newStatus)
+//Update single flight instance in flights table
+    public void UpdateStatus(string newName, string newDate, string newDeparture, string newArrival, string newStatus)
     {
       MySqlConnection conn = DB.Connection();
       conn.Open();
       MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = "@UPDATE flights SET status = @newStatus WHERE id = @searchId;";
+      cmd.CommandText = "@UPDATE flights SET flight_name = @newName, date = @newDate, dept_city = @newDept, arrival_city = @newArrival, status = @newStatus WHERE id = @searchId;";
 
       MySqlParameter searchId = new MySqlParameter();
       searchId.ParameterName = "@searchId";
       searchId.Value = _id;
       cmd.Parameters.Add(searchId);
 
+      MySqlParameter flight_name = new MySqlParameter();
+      flight_name.ParameterName = "@newName";
+      flight_name.Value = newName;
+      cmd.Parameters.Add(flight_name);
+      //cmd.Parameters.Add(new MySqlParameter("@newName", _flightName));
+
+      MySqlParameter date = new MySqlParameter();
+      date.ParameterName = "@newDate";
+      date.Value = newDate;
+      cmd.Parameters.Add(date);
+      //cmd.Parameters.Add(new MySqlParameter("@newDate", _date));
+
+      MySqlParameter dept_city = new MySqlParameter();
+      dept_city.ParameterName = "@newDept";
+      dept_city.Value = newDeparture;
+      cmd.Parameters.Add(dept_city);
+      //cmd.Parameters.Add(new MySqlParameter("@newDept", _deptCity));
+
+      MySqlParameter arrival_city = new MySqlParameter();
+      arrival_city.ParameterName = "@newArrival";
+      arrival_city.Value = newStatus;
+      cmd.Parameters.Add(arrival_city);
+      //cmd.Parameters.Add(new MySqlParameter("@newArrival", _arrivalCity));
+
       MySqlParameter status = new MySqlParameter();
       status.ParameterName = "@newStatus";
       status.Value = newStatus;
       cmd.Parameters.Add(status);
+      //cmd.Parameters.Add(new MySqlParameter("@newStatus", _status));
 
       cmd.ExecuteNonQuery();
+      _flightName = newName;
+      _date = newDate;
+      _deptCity = newDeparture;
+      _arrivalCity = newArrival;
       _status = newStatus;
 
       conn.Close();
@@ -271,7 +324,7 @@ namespace AirlinePlanner.Models
         conn.Dispose();
       }
     }
-//delete single flight instances from database
+//Delete single flight instance from flights table
     public void Delete()
     {
       MySqlConnection conn = DB.Connection();
@@ -293,7 +346,7 @@ namespace AirlinePlanner.Models
         conn.Dispose();
       }
     }
-//delete all flight instances from database
+//Delete all flight instances from flights table
     public static void DeleteAll()
     {
       MySqlConnection conn = DB.Connection();
