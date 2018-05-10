@@ -210,7 +210,13 @@ namespace AirlinePlanner.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = "@UPDATE cities SET name = @newName, airline = @newAirline WHERE id = @searchId;";
+      cmd.CommandText = @"UPDATE cities SET name = @newName, airline = @newAirline WHERE id = @searchId;";
+
+      MySqlParameter searchId = new MySqlParameter();
+      searchId.ParameterName = "@searchId";
+      searchId.Value = _id;
+      cmd.Parameters.Add(searchId);
+      //cmd.Parameters.Add(newMySqlParameter("@searchId", _id));
 
       MySqlParameter name = new MySqlParameter();
       name.ParameterName = "@newName";
@@ -241,9 +247,9 @@ namespace AirlinePlanner.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"DELETE FROM cities WHERE id = @Cityd;
+      cmd.CommandText = @"DELETE FROM cities WHERE id = @CityId;
       DELETE FROM cities_flights
-      WHERE city_id = @CityId;";
+      WHERE id = @CityId;";
 
       MySqlParameter cityIdParameter = new MySqlParameter();
       cityIdParameter.ParameterName = "@CityId";

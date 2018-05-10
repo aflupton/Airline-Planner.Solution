@@ -50,22 +50,19 @@ namespace AirlinePlanner.Controllers
       return RedirectToAction("Details",  new { id = flightId });
     }
 
-    [HttpGet("/flights/{id}/update")]
+    [HttpPost("/flights/{id}/update")]
     public ActionResult UpdateFlight(int id)
     {
       Flight updateFlight = Flight.Find(id);
-
       return RedirectToAction("Details", updateFlight);
     }
 
     [HttpGet("flights/{id}/delete")]
     public ActionResult Delete(int id)
     {
-      Dictionary<string, object> model = new Dictionary<string, object>{};
       Flight selectedFlight = Flight.Find(id);
-      int flightId = selectedFlight.GetId();
       selectedFlight.Delete();
-      return RedirectToAction("Index", new { id = flightId });
+      return RedirectToAction("Index");
     }
 
     [HttpGet("/flights/deleteall")]

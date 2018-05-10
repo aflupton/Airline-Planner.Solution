@@ -29,10 +29,10 @@ namespace AirlinePlanner.Controllers
     }
 
     [HttpGet("/cities/{id}")]
-    public ActionResult Details(int id)
+    public ActionResult Details(int cityId)
     {
         Dictionary<string, object> model = new Dictionary<string, object>();
-        City selectedCity = City.Find(id);
+        City selectedCity = City.Find(cityId);
         List<Flight> cityFlights = selectedCity.GetFlights();
         List<Flight> allFlights = Flight.GetAllFlights();
         model.Add("selectedCity", selectedCity);
@@ -50,20 +50,29 @@ namespace AirlinePlanner.Controllers
        return RedirectToAction("Details",  new { id = cityId });
     }
 
-    [HttpGet("/cities/{id}/update")]
+    [HttpPost("/cities/{id}/update")]
     public ActionResult UpdateCity(int cityId)
     {
       City updateCity = City.Find(cityId);
       return RedirectToAction("Details", updateCity);
     }
+
+    // [HttpPost("/cities/{id}/updated")]
+    // public ActionResult UpdatedCity(int cityId)
+    // {
+    //     string newName = Request.Form["city-name"];
+    //     string newAirline = Request.Form["airline-name"];
+    //     City newCity = new City(newName, newAirline, cityId);
+    //     newCity.UpdateCity(newCity);
+    //     return RedirectToAction("Details");
+    // }
+
     [HttpGet("/cities/{id}/delete")]
-    public ActionResult Delete(int id)
+    public ActionResult Delete(int cityId)
     {
-      Dictionary<string, object> model = new Dictionary<string, object>{};
-      City selectedCity = City.Find(id);
-      int cityId = selectedCity.GetCityId();
+      City selectedCity = City.Find(cityId);
       selectedCity.Delete();
-      return RedirectToAction("Index", new { id = cityId });
+      return RedirectToAction("Index");
     }
 
     [HttpGet("/cities/deleteall")]

@@ -274,12 +274,13 @@ namespace AirlinePlanner.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = "@UPDATE flights SET flight_name = @newName, date = @newDate, dept_city = @newDept, arrival_city = @newArrival, status = @newStatus WHERE id = @searchId;";
+      cmd.CommandText = @"UPDATE flights SET flight_name = @newName, date = @newDate, dept_city = @newDept, arrival_city = @newArrival, status = @newStatus WHERE id = @searchId;";
 
       MySqlParameter searchId = new MySqlParameter();
       searchId.ParameterName = "@searchId";
       searchId.Value = _id;
       cmd.Parameters.Add(searchId);
+      //cmd.Parameters.Add(newMySqlParameter("@searchId", _id));
 
       MySqlParameter flight_name = new MySqlParameter();
       flight_name.ParameterName = "@newName";

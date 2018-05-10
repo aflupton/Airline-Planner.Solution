@@ -38,7 +38,7 @@ namespace AirlinePlanner.Tests
      [TestMethod]
      public void Save_SavesCityItemToDatabase_CityTable()
      {
-       City testCity = new City("Seattle", "Delta");
+       City testCity = new City("Seattle", "Delta", 0);
        testCity.Save();
 
        List<City> testResult = City.GetAllCities();
@@ -63,32 +63,47 @@ namespace AirlinePlanner.Tests
 
        List<Flight> result = testCity.GetFlights();
        List<Flight> testList = new List<Flight> {testFlight};
-       Console.WriteLine(result.Count);
-       Console.WriteLine(Flight.GetAllFlights().Count);
+      //  Console.WriteLine(result.Count);
+      //  Console.WriteLine(Flight.GetAllFlights().Count);
+
        //Assert
        CollectionAssert.AreEqual(result, testList);
 
      }
 
-    //  [TestMethod]
-    //  public void Edit_UpdateCityDataInDatabase_Strings()
-    //  {
-    //    //Arrange
-    //    string firstCity = "Seattle";
-    //    City testCity = new City(firstCity);
-    //    testCity.Save();
-    //    string secondCity = "New York";
-     //
-    //    //Act
-    //    testCity.Update(secondCity);
-    //    string result = City.Find(testCity.GetCityId()).GetName();
-     //
-    //    //Assert
-    //    Assert.AreEqual(secondCity, result);
-    //  }
+     [TestMethod]
+     public void Edit_UpdateCityDataInDatabase_Strings()
+     {
+       //Arrange
+       City testCity = new City("Seattle", "Delta");
+       testCity.Save();
+
+       //Act
+       testCity.UpdateCity("New York", "United");
+       City newCity = City.Find(testCity.GetCityId());
+
+       //Assert
+      //  Console.WriteLine("Name: " + newCity.GetName());
+      //  Console.WriteLine("Airline: " + newCity.GetAirline());
+       Assert.AreEqual("New York", newCity.GetName());
+       Assert.AreEqual("United", newCity.GetAirline());
+     }
+
     [TestMethod]
     public void Delete_CityItem_CitiesTable()
     {
+      //Arrange
+      City testCity = new City("Seattle", "Alaska");
+      testCity.Save();
+
+      //Act
+      testCity.Delete();
+      City newCity = City.Find(testCity.GetCityId());
+
+      //Assert
+      // Console.WriteLine("Name: " + newCity.GetName());
+      Assert.AreEqual("", newCity.GetName());
+      Assert.AreEqual("", newCity.GetAirline());
 
     }
   }
