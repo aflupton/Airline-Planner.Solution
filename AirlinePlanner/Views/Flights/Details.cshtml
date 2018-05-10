@@ -3,7 +3,7 @@
 }
 @using AirlinePlanner.Models;
 
-<h3>Flight: @Model["selectedFlight"].GetName()</h3>
+<h3>Flight: @Model["selectedFlight"].GetFlightName()</h3>
 @if (@Model["flightCities"].Count != 0)
 {
   <h4>Here are the associated cities for this flight:</h4>

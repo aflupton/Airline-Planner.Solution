@@ -23,26 +23,56 @@ namespace AirlinePlanner.Models
       _status = status;
       _id = id;
     }
-    public string GetName()
+    public string GetFlightName()
     {
       return _flightName;
     }
+
+    public void SetFlightName(string newFlightName)
+    {
+      _flightName = newFlightName;
+    }
+
     public string GetDate()
     {
       return _date;
     }
+
+    public void SetDate(string newDate)
+    {
+      _date = newDate;
+    }
+
     public string GetDepartureCity()
     {
       return _deptCity;
     }
+
+    public void SetDepartureCity(string newDepartureCity)
+    {
+      _deptCity = newDepartureCity;
+    }
+
     public string GetArrivalCity()
     {
       return _arrivalCity;
     }
+
+    public void SetArrivalCity(string newArrivalCity)
+    {
+      _arrivalCity = newArrivalCity;
+    }
+
     public string GetStatus()
     {
       return _status;
     }
+
+    public void SetStatus(string newStatus)
+    {
+      _status = newStatus;
+    }
+
     public int GetId()
     {
       return _id;
@@ -57,15 +87,15 @@ namespace AirlinePlanner.Models
       else
       {
         Flight newFlight = (Flight) otherFlight;
-        return this.GetName().Equals(newFlight.GetName());
+        return this.GetFlightName().Equals(newFlight.GetFlightName());
       }
     }
 
     public override int GetHashCode()
     {
-         return this.GetName().GetHashCode();
+         return this.GetFlightName().GetHashCode();
     }
-
+//saves flight instance to database
     public void Save()
     {
       MySqlConnection conn = DB.Connection();
@@ -87,7 +117,7 @@ namespace AirlinePlanner.Models
           conn.Dispose();
       }
     }
-
+//get all flight instances from database
     public static List<Flight> GetAllFlights()
     {
       List<Flight> allFlights = new List<Flight> {};
@@ -116,7 +146,7 @@ namespace AirlinePlanner.Models
       return allFlights;
 
     }
-
+//saves to join table
     public void AddCitiesToFlights(City newCity)
     {
       MySqlConnection conn = DB.Connection();
@@ -142,7 +172,7 @@ namespace AirlinePlanner.Models
       }
 
     }
-
+//reads from join table
     public List<City> GetCities()
     {
       MySqlConnection conn = DB.Connection();
@@ -176,7 +206,7 @@ namespace AirlinePlanner.Models
       }
       return cities;
     }
-
+//finds flight instances from database
     public static Flight Find(int flightsId)
     {
         MySqlConnection conn = DB.Connection();
@@ -214,7 +244,7 @@ namespace AirlinePlanner.Models
         }
         return newFlight;
     }
-
+//updates flight instances in database
     public void UpdateStatus(string newStatus)
     {
       MySqlConnection conn = DB.Connection();
@@ -241,7 +271,7 @@ namespace AirlinePlanner.Models
         conn.Dispose();
       }
     }
-
+//delete single flight instances from database
     public void Delete()
     {
       MySqlConnection conn = DB.Connection();
@@ -262,7 +292,7 @@ namespace AirlinePlanner.Models
         conn.Close();
       }
     }
-
+//delete all flight instances from database
     public static void DeleteAll()
     {
       MySqlConnection conn = DB.Connection();

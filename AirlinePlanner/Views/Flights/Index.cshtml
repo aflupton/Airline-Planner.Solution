@@ -9,7 +9,7 @@
     <ul>
       @foreach (var flight in Model)
       {
-        <li><a href="/flights/@flight.GetId()">@flight.GetName()</a></li>
+        <li><a href="/flights/@flight.GetId()">@flight.GetFlightName()</a></li>
       }
     </ul>
   }

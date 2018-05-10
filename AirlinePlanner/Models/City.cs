@@ -52,7 +52,7 @@ namespace AirlinePlanner.Models
     {
          return this.GetName().GetHashCode();
     }
-
+//saves new city instance to database
     public void Save()
     {
       MySqlConnection conn = DB.Connection();
@@ -80,7 +80,7 @@ namespace AirlinePlanner.Models
         conn.Dispose();
       }
     }
-
+//gets all city objects from database
     public static List<City> GetAllCities()
     {
       List<City> allCities = new List<City>{};
@@ -105,7 +105,7 @@ namespace AirlinePlanner.Models
       }
       return allCities;
     }
-
+//finds city instance in database
     public static City Find(int citiesId)
     {
         MySqlConnection conn = DB.Connection();
@@ -138,11 +138,12 @@ namespace AirlinePlanner.Models
         }
         return newCity;
     }
-
+//updates city instance in database
     public void UpdateCity(string newCity)
     {
-      
+
     }
+//deletes single city instance in database
     public void Delete()
     {
       MySqlConnection conn = DB.Connection();

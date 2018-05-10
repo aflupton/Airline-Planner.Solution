@@ -56,10 +56,14 @@ namespace AirlinePlanner.Controllers
       City updateCity = City.Find(cityId);
       return RedirectToAction("Details", updateCity);
     }
-    [HttpGet("/cities/delete")]
-    public ActionResult Delete()
+    [HttpGet("/cities/{id}/delete")]
+    public ActionResult Delete(int id)
     {
-      return RedirectToAction("Index");
+      Dictionary<string, object> model = new Dictionary<string, object>{};
+      City selectedCity = City.Find(id);
+      int cityId = selectedCity.GetCityId();
+      selectedCity.Delete();
+      return RedirectToAction("Index", new { id = cityId });
     }
 
     [HttpGet("/cities/deleteall")]

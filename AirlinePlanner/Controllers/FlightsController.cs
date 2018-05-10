@@ -58,11 +58,14 @@ namespace AirlinePlanner.Controllers
       return RedirectToAction("Details", updateFlight);
     }
 
-    [HttpGet("flights/delete")]
-    public ActionResult Delete()
+    [HttpGet("flights/{id}/delete")]
+    public ActionResult Delete(int id)
     {
-
-      return RedirectToAction("Index");
+      Dictionary<string, object> model = new Dictionary<string, object>{};
+      Flight selectedFlight = Flight.Find(id);
+      int flightId = selectedFlight.GetId();
+      selectedFlight.Delete();
+      return RedirectToAction("Index", new { id = flightId });
     }
 
     [HttpGet("/flights/deleteall")]
